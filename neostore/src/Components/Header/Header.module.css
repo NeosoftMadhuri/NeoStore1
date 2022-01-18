@@ -1,0 +1,41 @@
+.body
+{
+    height: 500px;
+}
+
+.image
+{
+    height: 400px;
+    display: block;
+    width: 100%;
+}
+.slider
+{
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+}
+
+.carousel-inner
+{
+    margin-left:0px;
+    position: absolute;
+}
+
+.h3style
+{
+   color:black;
+   font-weight: bold;
+}
+
+@media only screen and (max-width: 600px){
+    .image
+    {
+        height: 200px;
+        display: block;
+        width: 100%;
+    }
+
+}

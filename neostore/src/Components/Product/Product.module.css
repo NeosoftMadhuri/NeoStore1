@@ -1,0 +1,151 @@
+.section
+{
+    margin: 40px 10px 40px 10px;
+}
+.cardcolstyle
+{
+    margin-top:100px;
+}
+.cardimage
+{
+    height: 180px;
+}
+.cardcol{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.cardbody
+{
+    box-sizing: border-box;
+}
+.ullist
+{
+    display: inline;
+}
+.sort{
+    display: flex;
+    justify-content:center;
+    flex-flow: row;
+}
+.sortsection{
+
+    display: inline-block;
+    margin-right: 20px;
+}
+.cardsection
+{
+    width: 320px;
+    text-align: center;
+}
+.card
+{
+    height: 370px;
+}
+
+
+
+
+@media only screen and (max-width: 300px){
+    .btn1
+{
+    
+    width:355px;
+    
+    
+}
+
+    
+}
+@media only screen and (max-width: 600px){
+.section
+{
+    margin: 40px 10px 40px 10px;
+}
+
+.btn1
+{
+    background: none;
+    color:black;
+    width:315px;
+    border:1px solid black;
+}
+.cardcolstyle
+{
+    margin-top:100px;
+}
+.image
+{
+    height: 180px;
+}
+.sort{
+    margin-top: 10px;
+    display: flex;
+    justify-content:center;
+    flex-flow: row;
+}
+.sortsection{
+   
+   margin-right: 5px;
+   display: flex;
+   font-size: 10px;
+
+}
+.cardsection
+{
+    width: 320px;
+    text-align: center;
+}
+ 
+}
+    
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) {
+    
+    .btn1
+    {
+        background: none;
+        color:black;
+        width:315px;
+        border:1px solid black;
+    }
+    .cardcolstyle
+    {
+        margin-top:100px;
+    }
+    .sortsection{
+       margin-right: 5px;
+       display: flex;
+       font-size: 5px;
+    }
+    .cardsection
+    {
+        width: 320px;
+        text-align: center;
+    }
+    
+    
+}
+    /* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .btn1
+    {
+    width:280px;
+    border:1px solid black;
+    }
+    .sortsection{
+        /* margin-right: 5px; */
+        display: flex;
+        font-size: 5    px;
+     }
+    
+}
+@media screen and (max-width: 1100px) {
+    .btn1
+    {
+    width:210px;
+    border:1px solid black;
+    }
+    
+  }
+

@@ -1,0 +1,20 @@
+.row1
+{
+    padding:10px;
+    border:1px solid darkgray;
+    box-shadow: 3px 3px 3px 3px;
+
+}
+.span1
+{
+   color:darkgreen
+}
+.tablediv
+{padding-bottom: 200px;
+}
+.colright
+{
+    text-align:right;
+    font-size: 20px;
+    margin-right: 15px;
+}

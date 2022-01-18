@@ -1,0 +1,60 @@
+.bodyheader
+{
+   margin:20px 10px;
+   text-align: center;
+   padding: 30px;
+   
+}
+.cardcol
+{
+    margin-bottom:20px;
+
+    
+}
+.card
+{
+    text-align: center;
+    margin-left: 10px;
+   
+}
+
+@media only screen and (max-width: 600px){
+    .card
+{
+    text-align: center;
+    margin-right: 30px;
+   
+}
+    .image
+    {
+        height: 200px;
+        display: block;
+        width: 100%;
+    }
+    .bodyheader
+{
+   margin:10px 10px;
+   text-align: center;
+   padding: 10px;
+   
+}
+}
+/* If screen size is more than 600px wide */
+@media only screen and (min-width: 600px){
+    .card
+    {
+        justify-content: center;
+    }
+ }
+@media only screen and (max-width: 768px){
+   .card
+   {
+       margin-left: 10px;
+   }
+}
+@media only screen and (max-width: 768px){
+    .card
+    {
+        margin-left: 30px;
+    }
+ }

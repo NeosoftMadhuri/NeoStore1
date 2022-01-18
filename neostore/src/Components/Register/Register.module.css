@@ -1,0 +1,183 @@
+.body
+{
+    background-image: linear-gradient(to right top, #e9cab6, #e0d1b5, #d3d8bb, #c7dec7, #bee3d6, #b5e4e0, #b0e3eb, #b1e1f5, #b2dbfc, #bdd3fe, #cec9fb, #e1bef0);
+}
+.formstyle
+{
+    box-shadow: 10px 10px 10px 10px;
+    border-radius: 10px 10px;
+    padding: 40px;
+    border:1px solid black;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+.iconstyle{
+   
+    background:none;
+   border :none;
+}
+
+.helptext
+{
+    text-align: right;
+}
+.heading
+{
+    color:rgb(69, 69, 150);
+    padding: 10px;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+.h4
+{
+    color:rgb(73, 73, 238);
+    padding: 5px;
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+.link
+{ 
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+.keploginfacebook
+{
+    background-color:rgb(18, 12, 104);
+    width: 270px;
+    height: 50px;
+    color:white;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 10px 10px ;
+    margin: 5px;
+}
+.keplogingoogle
+{
+    font-size: 15px;
+    font-weight: bold;
+    width: 270px;
+    height: 50px;
+    color:white;
+    background-color: rgb(150, 8, 8);
+    border-radius: 10px 10px ;
+    margin: 5px;
+}
+.socialbutton
+{
+    text-align: center;
+  
+}
+.divlink
+{
+    text-align: right;
+    margin: 10px;
+}
+
+.loginbutton
+{
+    font-size: 30px;
+    margin-right: 20px;
+}
+
+.recoverheading
+{
+    text-align: center;
+    color:midnightblue
+}
+
+
+
+
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+
+@media only screen and (max-width: 600px){
+    .heading
+{
+    color:rgb(69, 69, 150);
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+    .divlink{
+        text-align: left;
+    }
+    .link{
+        font-size: 10px;
+        font-weight: bold;
+    }
+    .keploginfacebook
+{
+    background-color:rgb(18, 12, 104);
+    width: 240px;
+    height: 50px;
+    color:white;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 10px 10px ;
+  
+}
+.keplogingoogle
+{
+    font-size: 15px;
+    font-weight: bold;
+    width: 240px;
+    height: 50px;
+    color:white;
+    background-color: rgb(150, 8, 8);
+    border-radius: 10px 10px ;
+  
+}
+
+}
+    
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .keploginfacebook
+    {
+        background-color:rgb(18, 12, 104);
+        width: 270px;
+        height: 50px;
+        color:white;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 10px 10px ;
+      
+    }
+    .keplogingoogle
+    {
+        font-size: 15px;
+        font-weight: bold;
+        width: 270px;
+        height: 50px;
+        color:white;
+        background-color: rgb(150, 8, 8);
+        border-radius: 10px 10px ;
+      
+    }
+}
+    /* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+   
+   
+}
+
+/* Recover Password section */
+.rmain
+{
+    margin-top:50px;
+}
+.divotp
+{
+    margin:15px;
+    color:rgb(17, 54, 6);
+    font-size: 17px;
+    text-align: center;
+    font-weight: bold;
+}

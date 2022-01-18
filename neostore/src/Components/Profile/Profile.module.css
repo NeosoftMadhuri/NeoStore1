@@ -1,0 +1,82 @@
+
+.body
+{
+    background-color: lightgray;
+   
+}
+.heading
+{
+    padding: 10px;
+}
+
+/* letf colunm style */
+
+.leftcol
+{
+    background-color: white;
+    border-radius: 10px 10px 10px 10px;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    
+}
+.btn_war
+{
+    text-align: center;
+}
+.imagestyle
+{
+    width: 150px;
+    height:150px;
+    margin-bottom:10px;
+}
+.liststyle
+{
+    list-style-type:none;
+    margin: 30px;
+    font-size: 17px;
+    padding:10px;
+    line-height: 30px;
+    text-decoration: none;
+}
+
+/* Right column style */
+
+.col2
+{
+    background-color: white;
+    border-radius: 10px 10px 10px 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.col2heading
+{
+    text-align: center;
+    color:Red;
+    font-weight: bold;
+    border-radius: 10px 10px 10px 10px;
+    padding: 10px;
+}
+
+.addressheader
+{
+    text-align: center;
+    color:Red;
+    background-color: white;
+    font-weight: bold;
+    border-radius: 10px 10px 10px 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+.pcformstyle
+{
+    padding: 10px;
+    /* margin: 40px; */
+}
+.iconstyle
+{
+    background:none;
+   border :none;
+}
+
