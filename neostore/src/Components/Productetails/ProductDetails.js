@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Row, Col, Button, Tabs, Tab,Modal } from 'react-bootstrap';
+import { Container, Row, Col, Button, Tabs, Tab, Modal } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getSingleProduct, Addcart, getCart ,updateRating} from '../Config/ProductService';
+import { getSingleProduct, Addcart, getCart, updateRating } from '../Config/ProductService';
 import ReactImageMagnify from 'react-image-magnify'
 import ReactStarsRating from 'react-awesome-stars-rating'
 import styles from '../Productetails/ProductDetails.module.css'
@@ -22,10 +22,10 @@ function getWindowDimensions() {
 export default function ProductDetails() {
     const { state } = useLocation();
     const dispatch = useDispatch();
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const uuid = useSelector(state => state.uuid)
     const [mainimage, setMainimage] = useState();
-    const [rating,setRating]=useState();
+    const [rating, setRating] = useState();
     const [ShowRating, setShowRating] = useState(false)
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [ImageDimension, setImageDimension] = useState({ imageHeight: 0, imageWidth: 0 })
@@ -36,10 +36,9 @@ export default function ProductDetails() {
     console.log(state)
 
     useEffect(() => {
-        console.log("useEffect")
         getSingleProduct(state)
             .then((res) => {
-                console.log(res.data.product[0].product_image)
+                console.log(res.data)
                 setMainimage(res.data.product[0].product_image)
                 setImages(res.data.product[0].sub_Image)
                 setRating(res.data.product[0].product_rating)
@@ -48,62 +47,55 @@ export default function ProductDetails() {
                 setWindowDimensions(getWindowDimensions());
             })
             .catch(err => {
-                
+
                 navigate('/ServerError')
-                
+
             })
     }, [])
     console.log(mainimage)
     console.log(images)
 
     const addCart = (pro) => {
-        console.log("add to cart")
         if (localStorage.getItem('_token')) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token)
-            console.log(decode)
             let data = { user: decode.uid, data: pro }
             Addcart(data)
                 .then((res) => {
-                    console.log(res.data)
                     alert(res.data.msg)
                     let data = { id: decode.uid[0]._id }
                     getCart(data)
                         .then((res) => {
-                            console.log(res.data)
                             let count = res.data.count;
                             dispatch({ type: 'cart', payload: count })
                         })
                         .catch(err => {
-                
+
                             navigate('/ServerError')
-                            
+
                         })
                 })
                 .catch(err => {
-                
+
                     navigate('/ServerError')
-                    
+
                 })
         }
         else {
-            console.log("Without login")
-            console.log(uuid)
             let data = { user: uuid, data: pro }
             Addcart(data)
                 .then((res) => {
-                    console.log(res.data)
                     alert(res.data.msg)
                     let data = { id: uuid }
                     getCart(data)
                         .then((res) => {
-                            console.log(res.data)
                             let count = res.data.count;
                             dispatch({ type: 'cart', payload: count })
                         })
                 })
-
-
+                .catch(err => {
+                    navigate('/ServerError')
+                })
         }
 
 
@@ -165,31 +157,26 @@ export default function ProductDetails() {
     }
 
     const Rating = (value) => {
-        console.log(value);
-
-        let finalRating = ((parseFloat(value) + parseFloat(rating)) / 2);
-        console.log(finalRating);
+        let finalRating = ((parseFloat(value) + parseFloat(rating)) / 2);  
         let data = { id: state, product_rating: finalRating }
-        console.log(data);
+      
         updateRating(data)
             .then(res => {
                 if (res.data.err == 1) {
-                    console.log(res.data);
-                    alert(res.data.msg);
+                   console.log(res.data.message)
                 }
                 else {
-                    setRating(finalRating)
                     setShowRating(false)
+                    alert(res.data.message);
+                    setRating(finalRating)
                 }
             })
             .catch(err => {
-                
                 navigate('/ServerError')
-                
             })
     }
 
-    const productRating=()=>{
+    const productRating = () => {
         if (localStorage.getItem('_token')) {
             setShowRating(true)
         }
@@ -223,8 +210,16 @@ export default function ProductDetails() {
                                     height: 1800
                                 }
                             }} />
+                            <div>
+                                <img src={`Images/Product/${pro.product_image}`} onClick={() => setMainimage(pro.product_image)} height="100px" width="100px" />
+                                {pro.sub_Image.map((item) =>
+
+                                    <img src={`Images/Product/${item}`} height="100px" width="100px" onClick={() => setMainimage(item)} />
+
+                                )}
+                            </div>
                             {/* </Row> */}
-                            <Row className='m-3'>
+                            {/* <Row className='m-3'>
                                 <Col sm={3} md={3} lg={3} >
                                     <Button style={{ background: "none" }} onClick={() => setMainimage(pro.product_image)}><img src={`Images/Product/${pro.product_image}`} height="100px" width="100px" /></Button>
                                 </Col>
@@ -241,10 +236,10 @@ export default function ProductDetails() {
 
                                 </Col>
 
-                            </Row>
+                            </Row> */}
                         </Col>
                         <Col xs={12} sm={6} md={6} lg={6}>
-                            <Row className=' p-4' style={{ border: "1px solid black" }}>
+                            <Row className=' p-4'>
                                 <section>
                                     <h4>{pro.product_name}</h4>
                                     <ReactStarsRating value={rating} isEdit={false} ishalf={true} className='mb-2' />

@@ -1,17 +1,13 @@
 import React, { useState, useRef } from 'react'
-import { Container, Row, Col, Form, Button, Image, InputGroup, FormControl, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button, Image, InputGroup, FormControl, Alert, Toast, ToastContainer } from 'react-bootstrap'
 import Footer from '../Footer/Footer'
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-import GoogleLogin from 'react-google-login'
-import { BsFacebook, BsTwitter, BsGoogle, BsInstagram } from 'react-icons/bs'
 import { FaUser, FaLock } from 'react-icons/fa'
 import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom'
 import SocialButton from "./SocialButton";
-import Navs from '../Navs/Navs'
 import styles from '../Login/Login.module.css'
 import { login, UserSocialLogin } from '../Config/Myservice'
-import { useSelector,useDispatch } from 'react-redux'
-import { getCart,changeId } from '../Config/ProductService'
+import { useSelector, useDispatch } from 'react-redux'
+import { getCart, changeId } from '../Config/ProductService'
 import jwt_decode from 'jwt-decode'
 const regForEmail = RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 
@@ -25,47 +21,45 @@ export default function Login() {
     const [showError, setShowerror] = useState(false);
     const [Err, setErr] = useState();
     const uuid = useSelector(state => state.uuid)
-  const dispatch=useDispatch();
+    const dispatch = useDispatch();
+    const [show, setShow] = useState(true)
 
     const handleSocialLogin = (user) => {
         console.log(user);
         if (user) {
             UserSocialLogin(user._profile)
                 .then((res) => {
-                    if (res.data.err == 0) {
-                        console.log(res.data)
+                    console.log(res)
+                    if (res.data.status == 200) {
                         localStorage.setItem("_token", res.data.token);
-                        sessionStorage.setItem("user", user._profile.email) 
+                        sessionStorage.setItem("user", user._profile.email)
                         let decode = jwt_decode(res.data.token);
-                        console.log(decode.uid[0]);
-                        console.log(uuid)
-                        let data={id:decode.uid[0]._id,customer_id:uuid}
+                        let data = { id: decode.uid[0]._id, customer_id: uuid }
                         changeId(data)
-                        .then((res)=>{
-                            alert(res.data.msg)
-                            dispatch({type:'enable'})
-                            let data={id:decode.uid[0]._id}
-                                        getCart(data)
-                                        .then(res=>{
-                                            console.log(res.data.count);
-                                            dispatch({type:'cart',payload:res.data.count})
-                                        })
-                                        .catch(err => {
-                
-                                            navigate('/ServerError')
-                                            
-                                        })
-                                        localStorage.removeItem('uuid')
-                                        navigate('/dashboard')
-                           
-                        })
-                        .catch(err => {
-                
-                            navigate('/ServerError')
-                            
-                        })
-                       
-                      
+                            .then((res) => {
+                                alert(res.data.message)
+                                dispatch({ type: 'enable' })
+                                let data = { id: decode.uid[0]._id }
+                                getCart(data)
+                                    .then(res => {
+                                        dispatch({ type: 'cart', payload: res.data.count })
+                                    })
+                                    .catch(err => {
+
+                                        navigate('/ServerError')
+
+                                    })
+                                localStorage.removeItem('uuid')
+                                navigate('/dashboard')
+
+                            })
+                            .catch(err => {
+
+                                navigate('/ServerError')
+
+                            })
+
+
                     }
                     if (res.data.err == 1) {
                         setErr(res.data.msg)
@@ -108,37 +102,37 @@ export default function Login() {
         console.log(data)
         login(data).
             then(res => {
-                if (res.data.err == 0) {
+                if (res.data.status == 200) {
                     console.log(res.data)
                     localStorage.setItem("_token", res.data.token);
                     sessionStorage.setItem("user", email.current.value)
                     let decode = jwt_decode(res.data.token);
                     console.log(decode.uid[0]);
                     console.log(uuid)
-                    let data={id:decode.uid[0]._id,customer_id:uuid}
+                    let data = { id: decode.uid[0]._id, customer_id: uuid }
                     changeId(data)
-                    .then((res)=>{
-                        alert(res.data.msg)
-                        dispatch({type:'enable'})
-                        let data={id:decode.uid[0]._id}
-                                    getCart(data)
-                                    .then(res=>{
-                                        console.log(res.data.count);
-                                        dispatch({type:'cart',payload:res.data.count})
-                                    })
-                                    .catch(err => {
-                
-                                        navigate('/ServerError')
-                                        
-                                    })
-                                    localStorage.removeItem('uuid')
-                                    navigate('/dashboard')
-                       
-                    })
-                   
-                }
-                if (res.data.err == 1) {
+                        .then((res) => {
+                            alert(res.data.message)
+                            dispatch({ type: 'enable' })
+                            let data = { id: decode.uid[0]._id }
+                            getCart(data)
+                                .then(res => {
+                                    console.log(res.data.count);
+                                    dispatch({ type: 'cart', payload: res.data.count })
+                                })
+                                .catch(err => {
 
+                                    navigate('/ServerError')
+
+                                })
+                            localStorage.removeItem('uuid')
+                            navigate('/dashboard')
+
+                        })
+
+                }
+                if (res.data.status == 400) {
+                    console.log(res.data.msg)
                     setErr(res.data.msg)
                     setShowerror(true)
                 }
@@ -148,12 +142,24 @@ export default function Login() {
         <>
 
             <Container fluid className={styles.body}>
+
                 <Container >
-                   
+
+
 
                     <Row>
                         <Col sm={1} md={2} lg={2} ></Col>
                         <Col sm={10} md={8} lg={8} >
+                            {/* {showError ?
+                                <ToastContainer position="top-center" className="p-3">
+                                    <Toast onClose={() => setShow(false)} show={show}  >
+                                        <Toast.Header>
+                                            {Err}
+                                        </Toast.Header>
+
+                                    </Toast>
+                                </ToastContainer>
+                                : ""} */}
                             <Form className={styles.formstyle} >
                                 <div style={{ textAlign: "center" }}>
                                     <Image src="Images/avtart.png" roundedCircle width="100px" height="100px" />
@@ -186,7 +192,7 @@ export default function Login() {
                                     <span style={{ color: 'red' }}>{errors.err_pass}</span>
 
                                 </Form.Group>
-                              
+
                                 <div style={{ textAlign: "center" }}>
                                     <Button variant="primary" type="submit" onClick={addUser} >
                                         Submit
@@ -194,9 +200,16 @@ export default function Login() {
                                 </div>
                                 <Row>
                                     <Col sm={12} md={12} lg={12}  >
-                                        <div className={styles.divlink}>
-                                            <span>Don't have account?</span><Link to="/register" className={styles.link}>Register</Link>
+                                        {/* <Col sm={12} md={6} lg={6}className={styles.divlink}>
+                                        <span className={styles.span1} >Don't have account ?</span>
+                                        </Col>
+                                        <Col sm={12} md={6} lg={6} className={styles.divlink}>
+                                        <Link to="/register" className={styles.link}>Register</Link>
                                             <Link to="/recoverpass" className={styles.link}>Forgot Password</Link>
+                                            </Col> */}
+                                        <div className={styles.divlink}>
+                                            <span className={styles.span1} >Don't have account ?</span><Link to="/register" className={styles.link}>Register</Link>
+                                            <Link to="/recoverpass" className={styles.link}>ForgotPassword</Link>
                                         </div>
                                     </Col>
                                 </Row>

@@ -82,7 +82,41 @@
 
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 280px){
+    .keploginfacebook
+{
+    background-color:rgb(18, 12, 104);
+    width: 10px;
+    height: 50px;
+    color:white;
+    font-size: 8px;
+    font-weight: bold;
+    border-radius: 10px 10px ;
+  
+}
+.keplogingoogle
+{
+    font-size: 8px;
+    font-weight: bold;
+    width: 100px;
+    height: 50px;
+    color:white;
+    background-color: rgb(150, 8, 8);
+    border-radius: 10px 10px ;
+  
+}
 
+}
+@media only screen and (max-width: 360px){
+    .divlink{
+        text-align: left;
+    }
+    .link{
+            text-align: left;
+        font-size: 10px;
+        font-weight: bold;
+    }
+}
 @media only screen and (max-width: 600px){
     .heading
 {
@@ -93,9 +127,10 @@
     margin-bottom: 20px;
 }
     .divlink{
-        text-align: left;
+        text-align: center;
     }
     .link{
+        margin-right: 14px;
         font-size: 10px;
         font-weight: bold;
     }
@@ -131,13 +166,19 @@
         text-align:center;
     }
     .link{
+        text-align:center;
         font-size: 15px;
         font-weight: bold;
     }
+    .span1
+    {
+        margin-right: 0px;
+    }
+    
     .keploginfacebook
     {
         background-color:rgb(18, 12, 104);
-        width: 180px;
+        width: 160px;
         height: 50px;
         color:white;
         font-size: 13px;
@@ -149,7 +190,7 @@
     {
         font-size: 13px;
         font-weight: bold;
-        width: 180px;
+        width: 160px;
         height: 50px;
         color:white;
         background-color: rgb(150, 8, 8);

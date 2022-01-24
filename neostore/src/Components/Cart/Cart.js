@@ -21,19 +21,15 @@ export default function Cart() {
         if (localStorage.getItem('_token') != undefined) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token)
-            console.log(decode)
             let data = { id: decode.uid[0]._id }
             getAllCart(data)
                 .then((res) => {
-                    console.log(res.data)
                     setProducts(res.data)
                     const dt = res.data.data.reduce((prev, cur) => prev + cur.total_productCost, 0);
                     setTotal(dt)
-                    console.log(dt)
                     setGst(dt * 0.05)
                     getCart(data)
                         .then((res) => {
-                            console.log(res.data)
                             let count = res.data.count;
                             dispatch({ type: 'cart', payload: count })
                         })
@@ -49,15 +45,12 @@ export default function Cart() {
             let data = { id: uuid }
             getAllCart(data)
                 .then((res) => {
-                    console.log(res.data.data)
                     setProducts(res.data)
                     const dt = res.data.data.reduce((prev, cur) => prev + cur.total_productCost, 0);
                     setTotal(dt)
-                    console.log(dt)
                     setGst(dt * 0.05)
                     getCart(data)
                         .then((res) => {
-                            console.log(res.data)
                             let count = res.data.count;
                             dispatch({ type: 'cart', payload: count })
                         })
@@ -72,24 +65,20 @@ export default function Cart() {
 
 
     const increment = (pro) => {
-        console.log(prompt)
         let data = { data: pro }
         incproduct(data)
             .then((res) => {
-                console.log(res.data)
-                alert(res.data.msg)
+                alert(res.data.message)
                 setStatus(true)
             })
         setStatus(false)
     }
 
     const decrement = (pro) => {
-        console.log(pro)
         let data = { data: pro }
         decproduct(data)
             .then((res) => {
-                console.log(res.data)
-                alert(res.data.msg)
+                alert(res.data.message)
                 setStatus(true)
             })
             .catch(err => {
@@ -101,16 +90,14 @@ export default function Cart() {
     }
 
     const deletecart = (id) => {
-        console.log(id)
         let data = { id: id }
         delCart(data)
             .then((res) => {
                 setStatus(true)
-                alert(res.data.msg)
+                alert(res.data.message)
 
                 getCart(data)
                     .then((res) => {
-                        console.log(res.data)
                         let count = res.data.count;
                         dispatch({ type: 'cart', payload: count })
                     })
@@ -149,15 +136,15 @@ export default function Cart() {
 
                                             </Col>
                                             <Col sm={9} md={9} lg={9}>
-                                                <p>{pro.product_id.product_name}<br />
+                                                <p className={styles.para}>{pro.product_id.product_name}<br />
                                                     {pro.product_id.product_producer}<br />
                                                     Status:<span style={{ color: "green", fontWeight: "bold" }}>In Stock</span></p>
                                             </Col>
                                         </Row>
                                         </td>
-                                        <td><Row className=' d-inline pr-1'>
+                                        <td><Row className=' mt-4 pr-1'>
 
-                                            <Col><Button className={styles.btn1} size='sm' onClick={() => { increment(pro) }}>+</Button> <Button className={styles.btn2} size='sm'>{pro.quantity}</Button> <Button className={styles.btn1} size='sm' onClick={() => { decrement(pro) }}>-</Button></Col>
+                                            <Col sm={4} md={4} lg={4}><Button className={styles.btn1} size='sm' onClick={() => { increment(pro) }}>+</Button></Col><Col sm={4} md={4} lg={4}><Button className={styles.btn2} size='sm'>{pro.quantity}</Button></Col><Col sm={4} md={4} lg={4}><Button className={styles.btn1} size='sm' onClick={() => { decrement(pro) }}>-</Button></Col>
                                         </Row></td>
                                         <td><p className='mt-4'>{pro.product_cost}</p></td>
                                         <td><p className='mt-4'>{pro.total_productCost}</p></td>

@@ -34,7 +34,7 @@ export default function Header() {
 
                         <Carousel.Caption>
                         <h3 >Gaurantee Of Every Product!!</h3>
-                          <Button className='btn btn-danger'>Enqury Now</Button>
+                         
                         </Carousel.Caption>
                     </Carousel.Item>
                     <Carousel.Item>
@@ -46,7 +46,7 @@ export default function Header() {
 
                         <Carousel.Caption>
                             <h3 className={styles.h3style}>Office Chairs</h3>
-                          <Button className='btn btn-danger'>Enqury Now</Button>
+                          
                         </Carousel.Caption>
                     </Carousel.Item>
                     {/* </Container> */}

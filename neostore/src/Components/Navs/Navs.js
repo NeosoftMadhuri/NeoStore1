@@ -14,23 +14,16 @@ export default function Navs() {
     const Logged = useSelector(state => state.Login)
     const cart = useSelector(state => state.cart)
     const uuid = useSelector(state => state.uuid)
-    console.log(cart)
-    console.log(uuid)
+  
     useEffect(() => {
         if (localStorage.getItem('_token')) {
-            console.log(localStorage.getItem('_token'));
             dispatch({ type: 'enable' })
-            console.log(Logged);
-
-
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token)
-            console.log(decode)
-            // let data = {id:decode.uid[0]._id}
             let data = { id: decode.uid[0]._id }
             getCart(data)
                 .then((res) => {
-                    console.log(res.data)
+                    console.log(res.data.count)
                     let count = res.data.count;
                     dispatch({ type: 'cart', payload: count })
                 })
@@ -39,10 +32,8 @@ export default function Navs() {
             let uuid = localStorage.getItem('uuid')
             dispatch({ type: 'disable', payload: uuid })
             let data = { id: uuid }
-            console.log(data)
             getCart(data)
                 .then(res => {
-                    console.log(res.data)
                     let count = res.data.count;
                     setCartcount(res.data.count)
                     dispatch({ type: 'cart', payload: res.data.count })
@@ -63,7 +54,6 @@ export default function Navs() {
         navigate('/dashboard')
     }
     const searchbar = (event) => {
-        // history('/Product')
         const value = event.target.value
         dispatch({ type: 'search', payload: value })
       

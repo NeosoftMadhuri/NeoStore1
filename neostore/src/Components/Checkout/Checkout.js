@@ -21,11 +21,9 @@ export default function Checkout() {
     useEffect(()=>{
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token)
-        console.log(decode)
         let data = {id:decode.uid[0]._id}
         getCart(data)
         .then((res) => {
-            console.log(res.data)
             let count = res.data.count;
             dispatch({ type: 'cart', payload: count })
         })
@@ -41,15 +39,11 @@ export default function Checkout() {
           e.preventDefault();
           let token = localStorage.getItem('_token')
           let decode = jwt_decode(token)
-          console.log(decode)
-        //   let data = {id:decode.uid[0]._id}
           let data={customer_address:state,id:decode.uid[0]._id}
           placeOrder(data)
           .then((res)=>{
-             console.log(res.data)
-             alert(res.data.msg)
+             alert(res.data.messagess)
              let data=({addr:state.finalAdd,product:state.Product})
-             console.log(data)
              sendOrder(data)
              .then((res)=>{
                  console.log(res.data)
@@ -81,12 +75,12 @@ export default function Checkout() {
                                         <Form.Label ><b>Enter Card Number : </b></Form.Label>
 
                                         <Form.Control type="number" placeholder="Enter credit card number" name="cnumber" onChange={(e)=>{setAccount_no(e.target.value)}} className='mb-2'  />
-                                        {account_no != '' && account_no.length < 12 && <span className="text-danger">Enter creidt card number correctly</span>}
+                                        {account_no != '' && account_no.length < 12 && <span className="text-danger" style={{fontWeight:"bold"}}>Enter creidt card number correctly</span>}
                                         </Form.Group>
                                         <Form.Group className="mb-3" >
                                         <Form.Label ><b>Expriry Date : </b></Form.Label>
                                         <Form.Control type="number" placeholder="Expriry Date" name="cnumber" onChange={(e)=>{setExpiry(e.target.value)}} />
-                                        {expiry != '' && expiry.length < 4 && <span className="text-danger">Enter creidt card number correctly</span>}
+                                        {expiry != '' && expiry.length < 4 && <span className="text-danger"style={{fontWeight:"bold"}}>Enter creidt card number correctly</span>}
 
                                     </Form.Group>
                                     <Button variant="light" className="btn btn-outline-dark my-2 my-sm-0" onClick={placeorder} >

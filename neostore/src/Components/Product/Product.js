@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Row, Col, Button, Card, Accordion, Form, DropdownButton, Dropdown } from 'react-bootstrap'
+import { Container, Row, Col, Button, Card, Accordion, Form, DropdownButton, Dropdown, Toast, ToastContainer } from 'react-bootstrap'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { BsStarFill, BsArrowUp, BsArrowDown } from 'react-icons/bs'
@@ -13,7 +13,7 @@ import jwt_decode from 'jwt-decode'
 import ReactStarsRating from 'react-awesome-stars-rating'
 
 export default function Product() {
-    const search=useLocation(state=>state.search)
+    const search = useLocation(state => state.search)
     const [productData, setProductData] = useState([]);
     const uuid = useSelector(state => state.uuid)
     const [categories, setCategory] = useState([]);
@@ -21,27 +21,23 @@ export default function Product() {
     const [pagenumber, setPagenumber] = useState(0);
     const [searchbar, setSearchbar] = useState('');
     const [selected, setSetlected] = useState({ selectedCategory: '', selectedColor: '' })
-    const searchItem=useSelector(state=>state.searchitem)
+    const searchItem = useSelector(state => state.searchitem)
+    const [show, setShow] = useState(true)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-   console.log(searchItem)
+
     const productsPerPage = 4;
-    console.log(pagenumber)
+  
     const pageVisited = pagenumber * productsPerPage
     const pageCount = Math.ceil(productData.length / productsPerPage)
     const cartData = localStorage.getItem("myCart") != undefined ? JSON.parse(localStorage.getItem("myCart")) : []
 
     useEffect(() => {
-        fetchProduct().then((res) => {
-            console.log(res.data)
-            setProductData(res.data.product)
-        })
+        fetchProduct().then((res) => {setProductData(res.data.product) })
         .catch(err => {
-                
-            navigate('/ServerError')
-            
-        })
+                navigate('/ServerError')
+            })
 
         getCategory().then((res) => { setCategory(res.data.category) })
 
@@ -49,13 +45,8 @@ export default function Product() {
 
 
     }, [])
-    console.log(search)
-    console.log(productData)
-    console.log(categories);
-    console.log(colors)
-
+  
     const handlePageClicked = ({ selected }) => {
-        console.log(selected)
         setPagenumber(selected);
     }
 
@@ -65,32 +56,20 @@ export default function Product() {
     }
 
     let searchdata = productData.filter(item => {
-        if(searchItem=='')
-        {
-            console.log("greater")
+        if (searchItem == '') {
+           
             return Object.keys(item).some(key =>
-            item[key].toString().toLowerCase().includes(searchbar.toString().toLowerCase()))
+                item[key].toString().toLowerCase().includes(searchbar.toString().toLowerCase()))
         }
-        else 
-        {
-            console.log("search")
+        else {
             return Object.keys(item).some(key =>
                 item[key].toString().toLowerCase().includes(searchItem.toString().toLowerCase()))
-        
-
         }
-       
-        
-        
-
     });
 
     const sortByAsec = (e) => {
         e.preventDefault();
-        console.log("ASENDING")
         const sortdata = productData;
-        console.log(sortdata)
-
         sortdata.sort(function (a, b) {
             var val1 = a.product_cost;
             var val2 = b.product_cost;
@@ -101,10 +80,7 @@ export default function Product() {
 
     const sortByDesc = (e) => {
         e.preventDefault();
-        console.log("Desending")
         const sortdata = productData;
-        console.log(sortdata)
-
         sortdata.sort(function (a, b) {
             var val1 = a.product_cost;
             var val2 = b.product_cost;
@@ -115,32 +91,27 @@ export default function Product() {
 
     const sortByColor = (col) => {
         let SelectedColor = { color_id: col._id, color_name: col.color_name, category_id: selected.selectedCategory }
-        console.log(SelectedColor)
         getColorProd(SelectedColor)
             .then((res) => {
-                console.log(res.data)
                 setProductData([...res.data.data])
             })
             .catch(err => {
-                
+
                 navigate('/ServerError')
-                
+
             })
     }
 
     const sortByCategory = (cat) => {
-        console.log(cat)
         let SelectedCategory = { category_id: cat._id, category_name: cat.category_name, color_id: selected.selectedColor }
-        console.log(SelectedCategory)
         getCategoryProd(SelectedCategory)
             .then((res) => {
-                console.log(res.data)
                 setProductData([...res.data.data])
             })
             .catch(err => {
-                
+
                 navigate('/ServerError')
-                
+
             })
     }
 
@@ -150,9 +121,9 @@ export default function Product() {
                 setProductData(res.data.product)
             })
             .catch(err => {
-                
+
                 navigate('/ServerError')
-                
+
             })
     }
 
@@ -162,64 +133,48 @@ export default function Product() {
     }
 
     const addCart = (pro) => {
-        console.log("add to cart")
         if (localStorage.getItem('_token')) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token)
-            console.log(decode)
             let data = { user: decode.uid, data: pro }
             Addcart(data)
                 .then((res) => {
-                    console.log(res.data)
-                    alert(res.data.msg)
+                    alert(res.data.message)
                     let data = { id: decode.uid[0]._id }
                     getCart(data)
                         .then((res) => {
-                            console.log(res.data)
                             let count = res.data.count;
                             dispatch({ type: 'cart', payload: count })
                         })
                 })
         }
         else {
-            console.log("Without login")
-            console.log(uuid)
+           
             let data = { user: uuid, data: pro }
             Addcart(data)
                 .then((res) => {
-                    console.log(res.data)
-                    alert(res.data.msg)
+                    alert(res.data.message)
                     let data = { id: uuid }
                     getCart(data)
                         .then((res) => {
-                            console.log(res.data)
                             let count = res.data.count;
                             dispatch({ type: 'cart', payload: count })
                         })
                 })
-
-
         }
-
-
-
     }
 
     //Sort By Rating
     const ratingChanged = (e) => {
         e.preventDefault();
         const sortdata = productData;
-        console.log(sortdata)
         sortdata.sort(function (a, b) {
             var val1 = a.product_rating;
             var val2 = b.product_rating;
             return val2 - val1;
         });
         setProductData([...sortdata])
-     
-    } 
-
-
+    }
 
     return (
         <>
@@ -233,7 +188,7 @@ export default function Product() {
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>All Product</Accordion.Header>
                                     <Accordion.Body>
-                                        <a  onClick={getallproduct} style={{cursor:"pointer"}}><h6>All Product</h6></a>
+                                        <a onClick={getallproduct} style={{ cursor: "pointer" }}><h6>All Product</h6></a>
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>
@@ -246,7 +201,7 @@ export default function Product() {
                                     <Accordion.Header>Category</Accordion.Header>
                                     {categories && categories.map((cat) =>
                                         <Accordion.Body>
-                                            <a  onClick={() => { sortByCategory(cat) }} style={{cursor:"pointer"}} ><h6>{cat.category_name}</h6></a>
+                                            <a onClick={() => { sortByCategory(cat) }} style={{ cursor: "pointer" }} ><h6>{cat.category_name}</h6></a>
                                         </Accordion.Body>
                                     )}
                                 </Accordion.Item>
@@ -258,7 +213,7 @@ export default function Product() {
                                     <Accordion.Header>Color</Accordion.Header>
                                     {colors && colors.map((col) =>
                                         <Accordion.Body>
-                                            <a  onClick={() => { sortByColor(col) }}style={{cursor:"pointer"}} ><h6>{col.color_name}</h6></a>
+                                            <a onClick={() => { sortByColor(col) }} style={{ cursor: "pointer" }} ><h6>{col.color_name}</h6></a>
                                         </Accordion.Body>
                                     )}
 
@@ -280,12 +235,12 @@ export default function Product() {
                             <Col xs={12} sm={6} md={6} lg={6} className='mt-2'>
                                 <Row>  <div className={styles.sort} >
                                     <h5 >Sort By:-</h5>
-                                   
+
 
                                     <ul className={styles.sortsection}>
                                         <li className={styles.sortsection}> <a href='#' onClick={sortByAsec}><h5><BiRupee /><BsArrowUp /></h5></a></li>
                                         <li className={styles.sortsection}><a href='#' onClick={sortByDesc}><h5><BiRupee /><BsArrowDown /></h5></a></li>
-                                        <li className={styles.sortsection}><a href='#' onClick={ratingChanged}><h5><BsStarFill style={{color:"orange"}} /></h5></a></li>
+                                        <li className={styles.sortsection}><a href='#' onClick={ratingChanged}><h5><BsStarFill style={{ color: "orange" }} /></h5></a></li>
                                     </ul>
                                 </div>
 
@@ -303,7 +258,20 @@ export default function Product() {
                                         <Card.Body className="bg-light box-sizing">
 
                                             <Card.Text className={styles.cardbody}>
-                                                <h6>{pro.product_name}</h6>
+                                                <div >
+                                                    <h6>{pro.product_name.length > 30 ? `${pro.product_name.substring(0, 30)}...` : pro.product_name}</h6>
+
+                                                    {/* {pro.product_name.length < 40 ? <h6>{pro.product_name}</h6> : <ToastContainer position="top-end" className="p-3">
+                                                    <Toast onClose={() => setShow(false)} show={show} style={{backgroundColor:"#e0f218"}} >
+                                                        <Toast.Header>
+                                                      Product Name should be less than 40 character long..
+                                                        </Toast.Header>
+                                                    </Toast>
+                                                </ToastContainer>
+                                                } */}
+
+                                                </div>
+
                                                 <h6>${pro.product_cost}</h6>
                                                 <ReactStarsRating value={pro.product_rating} isEdit={false} ishalf={true} className='mb-2' />
                                             </Card.Text>
@@ -318,6 +286,8 @@ export default function Product() {
                     </Col>
 
                 </Row>
+
+
                 <ReactPaginate
                     previousLabel={"<<"}
                     nextLabel={">>"}

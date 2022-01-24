@@ -6,6 +6,7 @@ import ReactToPdf from 'react-to-pdf';
 import jwt_decode from 'jwt-decode'
 import styles from '../Order/Order.module.css'
 import { useNavigate } from 'react-router-dom';
+import Footer from '../Footer/Footer';
 
 
 const options = {
@@ -30,49 +31,38 @@ export default function Order() {
 
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token)
-        console.log(decode)
         let data = { id: decode.uid[0]._id }
-        console.log(data)
         getAllOrder(data)
             .then((res) => {
-                console.log(res.data.data)
                 setProducts(res.data)
                 const dt = res.data.data.reduce((prev, cur) => prev + cur.total_productCost, 0);
                 setTotal(dt)
-                console.log(dt)
                 setGst(dt * 0.05)
             })
             .catch(err => {
-                
+
                 navigate('/ServerError')
-                
+
             })
-            fetchProfile(data)
+        fetchProfile(data)
             .then((res) => {
-                console.log(res.data)
                 setUser(res.data.profile)
             })
             .catch(err => {
-                
                 navigate('/ServerError')
-                
             })
 
     }, [])
     const handleClose = () => setShow(false);
     const handleShow = (pro) => {
-        console.log(pro)
         setData(pro)
         setShow(true);
     }
-    console.log(product)
-    console.log(user)
-
 
     return (
 
         <>
-            <Container>
+            <Container className='mb-3'>
                 <Row >
 
                     <hr />
@@ -88,7 +78,7 @@ export default function Order() {
                                 </Col>
                                 <hr />
                                 <div> <Button onClick={() => { handleShow(pro) }}>Download Invioce As PDF </Button></div>
-                               <hr/>
+                                <hr />
                                 <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false} fullscreen={true}>
                                     <Modal.Header closeButton>
                                         <Modal.Title >
@@ -194,6 +184,7 @@ export default function Order() {
                     </Row>
                 </Row>
             </Container>
+            <Footer />
         </>
     )
 }

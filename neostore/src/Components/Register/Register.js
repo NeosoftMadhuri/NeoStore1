@@ -5,8 +5,6 @@ import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom'
 import { FaUser, FaLock } from 'react-icons/fa'
 import { MdTextFields, MdEmail, MdPhone, MdLock } from 'react-icons/md'
 import { register } from '../Config/Myservice'
-// import  {bcrypt}  from 'bcrypt'
-import Navs from '../Navs/Navs'
 import Footer from '../Footer/Footer'
 import styles from '../Register/Register.module.css'
 const regForName = RegExp(/[A-Za-z ]+/)
@@ -61,21 +59,18 @@ export default function Register() {
 
         event.preventDefault();
         let b_pass = password.current.value;
-        if (fname.current.value == '' && lname.current.value == '' && email.current.value == '' && password.current.value == '' && mobile.current.value == '' && gender == undefined) {
+        if (fname.current.value == '' || lname.current.value == '' || email.current.value == '' || password.current.value == '' || mobile.current.value == '' || gender == undefined) {
             setErr("Please Fill the all field ")
             setShowerror(true)
         }
         else {
             let data = { fname: fname.current.value, lname: lname.current.value, email: email.current.value, password: password.current.value, mobile: mobile.current.value, gender: gender }
-
-            console.log(data)
             register(data)
                 .then(res => {
-                    if (res.data.err == 0) {
-                        console.log(res.data)
+                    if (res.data.status ==200) {
                         navigate('/login')
                     }
-                    if (res.data.err == 1) {
+                    if (res.data.sttus ==400) {
                         console.log(res.data)
                         setErr(res.data.msg)
                         setShowerror(true)
@@ -246,13 +241,13 @@ export default function Register() {
                                     <Row>
                                         <Col sm={6} md={6} lg={6}>
                                             <div style={{ textAlign: "center" }}>
-                                                <Button type="submit" className="btn btn-primary mb-3">Submit</Button>
+                                                <Button type="submit" className="btn btn-primary mb-3" >Submit</Button>
                                             </div>
                                         </Col>
                                         <Col sm={6} md={6} lg={6}>
                                             <div style={{ textAlign: "center" }}>
-                                                <Button className="btn btn-secondary" type="submit">
-                                                    <Link to="/login" style={{ color: "white", textDecoration: "none" }}>Back</Link>
+                                                <Button className="btn btn-secondary" type="button">
+                                                    <Link to="/login" style={{ color: "white", textDecoration: "none" }}>Cancel</Link>
                                                 </Button>
                                             </div>
 

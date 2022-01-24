@@ -30,12 +30,12 @@ export default function RecoverPass() {
     const sendMail = (event) => {
 
         event.preventDefault();
-        setUser(email.current.value)
         console.log(email.current.value)
+        setUser(email.current.value)
         sessionStorage.setItem('user', email.current.value)
-        sendEmail(user)
+        let data={email:email.current.value}
+        sendEmail(data)
             .then((res) => {
-                console.log(res.data.OTP)
                 setOtp(res.data.OTP)
             })
         setShow(false)
@@ -72,24 +72,22 @@ export default function RecoverPass() {
     const submit = (event) => {
 
         event.preventDefault();
-        console.log(vcode.current.value, OTP)
         if (vcode.current.value == OTP) {
-            alert("OTP MACHED")
+           
             let data = { email: user, password: npass.current.value }
-            console.log(data)
             recoverPass(data)
                 .then((res) => {
-                    if (res.data.err == 0) {
+                    if (res.data.status == 200) {
+                        alert(res.data.message)
                         navigate("/login")
                     }
                     else {
-                        setErr(res.data.msg)
+                        setErr(res.data.message)
                         setShowerror(true)
                     }
                 })
 
-            document.getElementById('email').value = " ";
-
+           
         }
         else {
             setErr("OTP NOT MATCH !! TRY AGAIN")

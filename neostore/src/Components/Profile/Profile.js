@@ -33,17 +33,18 @@ export default function Profile() {
     const [state, setState] = useState('');
     const [country, setCountry] = useState('')
     const [newadd, setNewadd] = useState(false)
+    const [status,setStatus]=useState(false)
     const image = useRef();
+    const [id,setId]=useState();
    
 
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token)
-        console.log(decode)
         let data = {id:decode.uid[0]._id}
+        setId(decode.uid[0]._id)
         fetchProfile(data)
             .then((res) => {
-                console.log(res.data)
                 setUser(res.data)
             })
 
@@ -86,22 +87,17 @@ export default function Profile() {
     }
     const Addnewaddress = (e) => {
         e.preventDefault();
-        console.log("Add Address")
         let email = sessionStorage.getItem('user')
-        let data = { email: email, address: address.current.value, pincode: pincode.current.value, city: city.current.value, state: state.current.value, country: country.current.value }
-        console.log(data)
+        let data = { id: id, address: address.current.value, pincode: pincode.current.value, city: city.current.value, state: state.current.value, country: country.current.value }
         addAddress(data)
             .then((res) => {
                 console.log(res.data)
             })
-        window.location.reload();
 
     }
 
     const edit = (event, pro) => {
         event.preventDefault();
-        console.log(pro)
-        console.log("edit clicked")
         setFname(pro.fname)
         setLname(pro.lname)
         setMobile(pro.mobile)
@@ -110,25 +106,20 @@ export default function Profile() {
     }
 
     const changestatus = () => {
-
-        console.log("add")
         setNewadd(true)
-        console.log(newadd)
     }
 
 
     const editProfile = () => {
-
-        console.log("edit")
         let email = sessionStorage.getItem('user')
-        let data = { email: email, fname: fname, lname: lname, mobile: mobile }
+        let data = { id: id, fname: fname, lname: lname, mobile: mobile }
         updateProfile(data)
             .then((res) => {
                 if (res.data.err == 1) {
-                    alert(res.data.msg)
+                    alert(res.data.message)
                 }
                 else {
-                    alert(res.data.msg)
+                    alert(res.data.message)
                 }
             })
             .catch(err => {
@@ -146,13 +137,6 @@ export default function Profile() {
         setShow(false)
         setShowadd(false)
         setUpload_image(false)
-        // setNewadd(false)
-    }
-
-    const changepassStatus = () => {
-        setChangepass(true);
-        setProfile(false)
-        setAddress_slot(false)
     }
 
     const profileStatus = () => {
@@ -161,17 +145,9 @@ export default function Profile() {
         setAddress_slot(false)
     }
 
-    const addressStatus = () => {
-        setProfile(false)
-        setChangepass(false)
-        setAddress_slot(true)
-
-    }
 
     const editadd = (event, addr) => {
         event.preventDefault();
-        console.log(addr)
-        console.log("edit  address clicked")
         setAddress(addr.address)
         setPincode(addr.pincode)
         setCity(addr.city)
@@ -184,11 +160,9 @@ export default function Profile() {
     const Addaddress = (e) => {
         e.preventDefault();
         let update = true;
-        console.log("Add Address")
         let email = sessionStorage.getItem('user')
         let data = { email: email, address: address, pincode: pincode, city: city, state: state, country: country, update: update }
-        console.log(data)
-        addAddress(data)
+               addAddress(data)
             .then((res) => {
                 console.log(res.data)
             })
@@ -199,14 +173,10 @@ export default function Profile() {
             })
 
         setShowadd(false)
-        window.location.reload();
-
-
     }
 
     const deleteAdd = (e, addr) => {
         e.preventDefault();
-        console.log(addr)
         let email = sessionStorage.getItem('user')
 
         deleteAddr(email, addr)
@@ -226,19 +196,15 @@ export default function Profile() {
     }
 
     const addPic = () => {
-        console.log("pic upload")
-
         let data = new FormData();
         data.append('file', document.getElementById('logo').files[0])
-        data.append('email', sessionStorage.getItem('user'))
+        data.append('id', id)
         uploadPic(data)
             .then((res) => {
-                if (res.data.err == 0) {
-                    alert(res.data.msg)
-                }
-                else {
-                    alert(res.data.msg)
-                }
+               
+                    alert(res.data.message)
+                    setStatus(true)
+             
             })
             .catch(err => {
                 
@@ -246,6 +212,7 @@ export default function Profile() {
                 
             })
         setUpload_image(false)
+        setStatus(false)
 
     }
     return (

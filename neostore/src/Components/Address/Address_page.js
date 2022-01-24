@@ -34,22 +34,17 @@ export default function Address_page() {
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token)
-        console.log(decode)
         setId(decode.uid[0]._id)
         let data = { id: decode.uid[0]._id }
         getAllCart(data)
             .then((res) => {
-                console.log(res.data)
                 setProducts(res.data)
             })
             .catch(err => {
-
                 navigate('/ServerError')
-
             })
         fetchProfile(data)
             .then((res) => {
-                console.log(res.data)
                 setUser(res.data)
             })
             .catch(err => {
@@ -61,19 +56,15 @@ export default function Address_page() {
 
     //Set Address for Order delivery
     const confirmAddress = (pro) => {
-        console.log(pro)
         setFinalAdd(pro)
     }
 
     //Add Address
     const Addnewaddress = (e) => {
         e.preventDefault();
-        console.log("Add Address")
         let data = { id: id, address: address, pincode: pincode, city: city, state: state, country: country }
-        console.log(data)
         addAddress(data)
             .then((res) => {
-                console.log(res.data)
                 setShow(true)
             })
         setShowadd(false)
@@ -83,8 +74,6 @@ export default function Address_page() {
 
     const editadd = (event, addr) => {
         event.preventDefault();
-        console.log(addr)
-        console.log("edit  address clicked")
         setAddress(addr.address)
         setPincode(addr.pincode)
         setCity(addr.city)
@@ -92,19 +81,15 @@ export default function Address_page() {
         setCountry(addr.country)
         setAddress_id(addr.Address_id)
         setShowadd(true);
-        console.log(showadd)
     }
 
     //Edit address 
-    const Addaddress = (e) => {
-        e.preventDefault();
+    const Addaddress = (event) => {
+        event.preventDefault();
         let update = true;
-        console.log("Add Address")
         let data = { Address_id: Address_id, id: id, address: address, pincode: pincode, city: city, state: state, country: country, update: update }
-        console.log(data)
         editAddress(data)
             .then((res) => {
-                console.log(res.data)
                 setStatus(true)
             })
         setShowadd(false)
@@ -114,11 +99,9 @@ export default function Address_page() {
     //Delete Address
     const deleteAdd = (e, addr) => {
         e.preventDefault();
-        console.log(addr)
         let data = { id: id, addr: addr }
         deleteAddr(data)
             .then((res) => {
-                console.log(res.data)
                 setStatus(true)
             })
         setStatus(false)
@@ -154,7 +137,9 @@ export default function Address_page() {
                                         <li> <FaList /> <Link to="/order">Order</Link></li>
                                         <li><FaUserAlt /> <Link to="/profile">Profile</Link></li>
                                         <li><FaRegAddressCard /> <Link to="/add">Address</Link> </li>
-                                        <li><MdOutlineCompareArrows /> <Link to="/chnagepass" > Change Password</Link></li>
+                                        {pro.social == false ?
+                                            <li><MdOutlineCompareArrows /> <Link to="/chnagepass" > Change Password</Link></li>
+                                            : ''}
                                     </ul>
                                 </div>
                             </Col>
@@ -306,6 +291,7 @@ export default function Address_page() {
 
                 </Container>
             </Container>
+            <Footer/>
 
         </>
     )

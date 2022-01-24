@@ -23,7 +23,6 @@ export default function Dashboard() {
     useEffect(() => {
         fetchProduct()
             .then((res) => {
-                console.log(res.data) 
                 setProductData(res.data.product)
             })
             .catch(err => {
@@ -39,20 +38,16 @@ export default function Dashboard() {
     }
 
     const addCart = (pro) => {
-        console.log("add to cart")
         if (localStorage.getItem('_token')) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token)
-            console.log(decode)
             let data = { user: decode.uid, data: pro }
             Addcart(data)
                 .then((res) => {
-                    console.log(res.data)
                     alert(res.data.msg)
                     let data = { id: decode.uid[0]._id }
                     getCart(data)
                         .then((res) => {
-                            console.log(res.data)
                             let count = res.data.count;
                             dispatch({ type: 'cart', payload: count })
                         })
@@ -69,17 +64,13 @@ export default function Dashboard() {
                 })
         }
         else {
-            console.log("Without login")
-            console.log(uuid)
             let data = { user: uuid, data: pro }
             Addcart(data)
                 .then((res) => {
-                    console.log(res.data)
                     alert(res.data.msg)
                     let data = { id: uuid }
                     getCart(data)
                         .then((res) => {
-                            console.log(res.data)
                             let count = res.data.count;
                             dispatch({ type: 'cart', payload: count })
                         })
@@ -93,10 +84,8 @@ export default function Dashboard() {
         .then((res)=>{
             setProductData(res.data.product)
         })
-        .catch(err => {
-                
-            navigate('/ServerError')
-            
+        .catch(err => {       
+            navigate('/ServerError');   
         })
     }
 
@@ -128,7 +117,7 @@ export default function Dashboard() {
                                 <Card className={styles.card}>
                                     <Card.Img variant="top" src={`Images/Product/${pro.product_image}`} style={{ height: "180px" }} onClick={() => selectedProduct(pro._id)} />
                                     <Card.Body className="bg-light">
-                                        <h6>{pro.product_name}</h6>
+                                    <h6>{pro.product_name.length > 30 ?`${pro.product_name.substring(0,30)}...`: pro.product_name }</h6>
                                         <Card.Text>
                                             <h6><BiRupee />{pro.product_cost}</h6>
                                         </Card.Text>

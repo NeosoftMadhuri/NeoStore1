@@ -50,10 +50,8 @@ const handler = (event) => {
 
 const Addaddress = (e) => {
     e.preventDefault();
-    console.log("Add Address")
     let email=sessionStorage.getItem('user')
     let data = { email:email,address: address.current.value, pincode: pincode.current.value, city: city.current.value, state: state.current.value, country: country.current.value }
-    console.log(data)
     addAddress(data)
     .then((res)=>{
         console.log(res.data)
@@ -63,11 +61,6 @@ const Addaddress = (e) => {
 }
     return (
         <>
-
-
-
-
-        
          <section className={styles.col2}>
                                         <Row className={styles.col2heading}>
                                             <h2>Add New Address</h2>

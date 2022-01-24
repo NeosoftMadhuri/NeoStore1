@@ -8,11 +8,9 @@ export default function Successful() {
     useEffect(()=>{
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token)
-        console.log(decode)
         let data = {id:decode.uid[0]._id}
         getCart(data)
         .then((res) => {
-            console.log(res.data)
             let count = res.data.count;
             dispatch({ type: 'cart', payload: count })
         })

@@ -32,12 +32,10 @@ export default function Address() {
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token)
-        console.log(decode)
         let data = { id: decode.uid[0]._id }
         setId(decode.uid[0]._id)
         fetchProfile(data)
             .then((res) => {
-                console.log(res.data)
                 setUser(res.data)
             })
             .catch(err => {
@@ -47,20 +45,16 @@ export default function Address() {
     }, [show, status])
 
     //Edit Address
-    const Addnewaddress = (e) => {
-        e.preventDefault();
-        console.log("Add Address")
+    const Addnewaddress = (event) => {
+        event.preventDefault();
         let email = sessionStorage.getItem('user')
         let data = { id: id, address: address, pincode: pincode, city: city, state: state, country: country }
-        console.log(data)
         addAddress(data)
             .then((res) => {
                 console.log(res.data)
             })
             .catch(err => {
-
                 navigate('/ServerError')
-
             })
         setShow(false)
         // window.location.reload();
@@ -69,8 +63,6 @@ export default function Address() {
 
     const editadd = (event, addr) => {
         event.preventDefault();
-        console.log(addr)
-        console.log("edit  address clicked")
         setAddress(addr.address)
         setPincode(addr.pincode)
         setCity(addr.city)
@@ -78,37 +70,29 @@ export default function Address() {
         setCountry(addr.country)
         setAddress_id(addr.Address_id)
         setShowadd(true);
-        console.log(showadd)
     }
 
     //Add Address
     const Addaddress = (e) => {
         e.preventDefault();
         let update = true;
-        console.log("Add Address")
-
         let data = { Address_id: Address_id, id: id, address: address, pincode: pincode, city: city, state: state, country: country, update: update }
-        console.log(data)
         editAddress(data)
             .then((res) => {
+
                 console.log(res.data)
+                setStatus(true)
             })
             .catch(err => {
-
                 navigate('/ServerError')
-
             })
-
+        setStatus(false)
         setShowadd(false)
-        window.location.reload();
-
 
     }
     //Delete Address
     const deleteAdd = (e, addr) => {
         e.preventDefault();
-        console.log(addr)
-
         let data = { id: id, addr: addr }
         deleteAddr(data)
             .then((res) => {
@@ -116,9 +100,7 @@ export default function Address() {
                 setStatus(true)
             })
             .catch(err => {
-
                 navigate('/ServerError')
-
             })
         setStatus(false)
 
@@ -131,8 +113,6 @@ export default function Address() {
 
             <Container className={styles.body} fluid>
                 <Container >
-
-
                     <Row>
                         <h4 className={styles.heading}>My Account</h4>
                         <hr />
@@ -150,7 +130,9 @@ export default function Address() {
                                         <li> <FaList /><Link to="/order">Order</Link></li>
                                         <li><FaUserAlt /> <Link to="/profile" >Profile</Link></li>
                                         <li><FaRegAddressCard /> <Link to="/address"  >Address</Link> </li>
-                                        <li><MdOutlineCompareArrows /> <Link to="/chnagepass" > Change Password</Link></li>
+                                        {pro.social == false ?
+                                            <li><MdOutlineCompareArrows /> <Link to="/chnagepass" > Change Password</Link></li>
+                                            : ''}
                                     </ul>
                                 </div>
                             </Col>
@@ -267,7 +249,7 @@ export default function Address() {
                                                             </Form.Group>
 
                                                             <div style={{ textAlign: "center" }}>
-                                                                <Button variant="primary" type="submit" onClick={Addaddress} >
+                                                                <Button variant="primary" type="button" onClick={Addaddress} >
                                                                     Submit
                                                                 </Button>
                                                             </div>
@@ -310,13 +292,13 @@ export default function Address() {
                                             <Form.Group className="mb-3" >
                                                 <Form.Control type="text" name="state" placeholder='State' onChange={(e) => { setState(e.target.value) }} className="form-control" size="20" />
                                             </Form.Group>
-                                            
+
                                             <Form.Group className="mb-3" >
                                                 <Form.Control type="text" name="country" placeholder='Country' onChange={(e) => { setCountry(e.target.value) }} className="form-control" size="20" />
                                             </Form.Group>
 
                                             <div style={{ textAlign: "center" }}>
-                                                <Button variant="primary" type="submit" onClick={Addnewaddress} >
+                                                <Button variant="primary" type="button" onClick={Addnewaddress} >
                                                     Submit
                                                 </Button>
 

@@ -22,11 +22,9 @@ export default function ChnagePass() {
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token)
-        console.log(decode)
         let data = {id:decode.uid[0]._id}
         fetchProfile(data)
             .then((res) => {
-                console.log(res.data)
                 setUser(res.data)
             })
 
@@ -60,15 +58,11 @@ export default function ChnagePass() {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token)
         let data = { oldpass: oldpass.current.value, npass: npass.current.value, cpass: cpass.current.value, id:decode.uid[0]._id }
-        console.log(data)
         changePass(data)
             .then((res) => {
-                if (res.data.err == 1) {
-                    alert(res.data.msg)
-                }
-                else {
-                    alert(res.data.msg)
-                }
+               
+                    alert(res.data.message)
+               
             })
             .catch(err => {
                 
@@ -100,7 +94,10 @@ export default function ChnagePass() {
                                         <li> <FaList /><Link to="/order" >Order</Link> </li>
                                         <li><FaUserAlt /> <Link to="/profile" >Profile</Link></li>
                                         <li><FaRegAddressCard /> <Link to="/address">Address</Link> </li>
-                                        <li><MdOutlineCompareArrows /> <Link to="/chnagepass"> Change Password</Link></li>
+                                        {pro.social==false?
+                                        <li><MdOutlineCompareArrows /> <Link to="/chnagepass" > Change Password</Link></li>
+                                        :''}
+                                       
                                     </ul>
                                 </div>
                             </Col>
