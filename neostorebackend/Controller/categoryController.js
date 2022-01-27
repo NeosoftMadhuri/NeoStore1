@@ -10,17 +10,3 @@ getCategory = async function (req, res, next) {
     }
 }
 module.exports={getCategory}
-// const getCategory= async (req, res) => {
-//    await categoryModel.find({},(err,data)=>{
-//         if(err)
-//         {
-//             console.log(err)
-//             res.json({"err":1,"msg":"Some went Wrong"})
-//         }
-//         else
-//         {
-//             res.json({ "err":0,category:data ,"status":200})
-//         }
-//     })
-// }
-// module.exports = { getCategory }

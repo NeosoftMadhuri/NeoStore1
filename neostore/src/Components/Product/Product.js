@@ -11,31 +11,29 @@ import ReactPaginate from 'react-paginate';
 import { fetchProduct, getCategory, getColor, getColorProd, getCategoryProd, Addcart, getCart } from '../Config/ProductService'
 import jwt_decode from 'jwt-decode'
 import ReactStarsRating from 'react-awesome-stars-rating'
+import { CART, SERACH } from '../Action/index'
 
 export default function Product() {
-    const search = useLocation(state => state.search)
+
     const [productData, setProductData] = useState([]);
-    const uuid = useSelector(state => state.uuid)
+    const uuid = useSelector(state => state.Login.uuid)
     const [categories, setCategory] = useState([]);
     const [colors, setColor] = useState([]);
     const [pagenumber, setPagenumber] = useState(0);
     const [searchbar, setSearchbar] = useState('');
     const [selected, setSetlected] = useState({ selectedCategory: '', selectedColor: '' })
-    const searchItem = useSelector(state => state.searchitem)
+    const searchItem = useSelector(state => state.searchitem.searchitem)
     const [show, setShow] = useState(true)
-
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const productsPerPage = 4;
-  
     const pageVisited = pagenumber * productsPerPage
     const pageCount = Math.ceil(productData.length / productsPerPage)
     const cartData = localStorage.getItem("myCart") != undefined ? JSON.parse(localStorage.getItem("myCart")) : []
 
     useEffect(() => {
-        fetchProduct().then((res) => {setProductData(res.data.product) })
-        .catch(err => {
+        fetchProduct().then((res) => { setProductData(res.data.product) })
+            .catch(err => {
                 navigate('/ServerError')
             })
 
@@ -45,7 +43,7 @@ export default function Product() {
 
 
     }, [])
-  
+
     const handlePageClicked = ({ selected }) => {
         setPagenumber(selected);
     }
@@ -57,7 +55,7 @@ export default function Product() {
 
     let searchdata = productData.filter(item => {
         if (searchItem == '') {
-           
+
             return Object.keys(item).some(key =>
                 item[key].toString().toLowerCase().includes(searchbar.toString().toLowerCase()))
         }
@@ -144,12 +142,12 @@ export default function Product() {
                     getCart(data)
                         .then((res) => {
                             let count = res.data.count;
-                            dispatch({ type: 'cart', payload: count })
+                            dispatch(CART(count));
                         })
                 })
         }
         else {
-           
+
             let data = { user: uuid, data: pro }
             Addcart(data)
                 .then((res) => {
@@ -158,7 +156,7 @@ export default function Product() {
                     getCart(data)
                         .then((res) => {
                             let count = res.data.count;
-                            dispatch({ type: 'cart', payload: count })
+                            dispatch(CART(count));
                         })
                 })
         }

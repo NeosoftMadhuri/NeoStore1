@@ -8,6 +8,7 @@ import styles from '../Productetails/ProductDetails.module.css'
 import { IoMdShare } from 'react-icons/io'
 import jwt_decode from 'jwt-decode'
 import { useSelector, useDispatch } from 'react-redux'
+import {CART,SERACH} from '../Action/index'
 import { WhatsappIcon, WhatsappShareButton, FacebookIcon, FacebookShareButton, PinterestShareButton, PinterestIcon, TelegramShareButton, TelegramIcon, TwitterIcon, TwitterShareButton } from 'react-share'
 
 function getWindowDimensions() {
@@ -23,7 +24,7 @@ export default function ProductDetails() {
     const { state } = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const uuid = useSelector(state => state.uuid)
+    const uuid = useSelector(state => state.Login.uuid)
     const [mainimage, setMainimage] = useState();
     const [rating, setRating] = useState();
     const [ShowRating, setShowRating] = useState(false)
@@ -67,7 +68,7 @@ export default function ProductDetails() {
                     getCart(data)
                         .then((res) => {
                             let count = res.data.count;
-                            dispatch({ type: 'cart', payload: count })
+                            dispatch(CART(count))
                         })
                         .catch(err => {
 
@@ -90,7 +91,8 @@ export default function ProductDetails() {
                     getCart(data)
                         .then((res) => {
                             let count = res.data.count;
-                            dispatch({ type: 'cart', payload: count })
+                            dispatch(CART(count))
+                           
                         })
                 })
                 .catch(err => {
@@ -193,14 +195,13 @@ export default function ProductDetails() {
 
                     <Row className='mt-5'>
                         <Col xs={12} sm={6} md={6} lg={6}>
-                            {/* <Row > */}
+                          
                             <ReactImageMagnify className={styles.rim} {...{
                                 smallImage: {
                                     alt: 'Wristwatch by Ted Baker London',
                                     isFluidWidth: false,
                                     src: `Images/Product/${mainimage}`,
-                                    // width: 500,
-                                    // height: 400
+                                   
                                     width: parseInt(ImageDimension.imageWidth),
                                     height: parseInt(ImageDimension.imageHeight),
                                 },
@@ -218,25 +219,7 @@ export default function ProductDetails() {
 
                                 )}
                             </div>
-                            {/* </Row> */}
-                            {/* <Row className='m-3'>
-                                <Col sm={3} md={3} lg={3} >
-                                    <Button style={{ background: "none" }} onClick={() => setMainimage(pro.product_image)}><img src={`Images/Product/${pro.product_image}`} height="100px" width="100px" /></Button>
-                                </Col>
-                                <Col sm={9} md={9} lg={9}>
-                                    <Row>
-                                        {pro.sub_Image.map((item) =>
-                                            <Col sm={4} md={4} lg={4}>
-                                                <Button style={{ background: "none" }} onClick={() => setMainimage(item)}><img src={`Images/Product/${item}`} height="100px" width="100px" /></Button>
-                                            </Col>
-                                        )}
-
-                                    </Row>
-
-
-                                </Col>
-
-                            </Row> */}
+                          
                         </Col>
                         <Col xs={12} sm={6} md={6} lg={6}>
                             <Row className=' p-4'>

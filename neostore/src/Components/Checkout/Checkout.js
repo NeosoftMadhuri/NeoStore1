@@ -7,6 +7,7 @@ import Footer from '../Footer/Footer'
 import jwt_decode from 'jwt-decode'
 import { useSelector ,useDispatch} from 'react-redux'
 import { sendOrder } from '../Config/Myservice'
+import {CART,SERACH} from '../Action/index'
 
 export default function Checkout() {
     
@@ -25,7 +26,8 @@ export default function Checkout() {
         getCart(data)
         .then((res) => {
             let count = res.data.count;
-            dispatch({ type: 'cart', payload: count })
+            dispatch(CART(count))
+           
         })
         .catch(err => {
                 

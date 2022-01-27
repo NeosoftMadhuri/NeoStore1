@@ -10,17 +10,5 @@ exports.getColor = async function (req, res, next) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 }
-// const getColor = async (req, res) => {
-    
-//     await colorModel.find({}, (err, data) => {
-//         if (err) {
-//             console.log(err)
-//             res.json({ "err": 1, "msg": "Some went Wrong" })
-//         }
-//         else {
-//             res.json({ "err": 0, color: data, "status": 200 })
-//         }
-//     })
-// }
-// module.exports = { getColor }
+
 

@@ -7,17 +7,18 @@ import { useSelector, useDispatch } from 'react-redux'
 import styles from '../Navs/Navs.module.css'
 import { v4 as uuidv4 } from 'uuid';
 import jwt_decode from 'jwt-decode'
+import {Enable,DISABLE,CART,SERACH} from '../Action/index'
 export default function Navs() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [cartCount, setCartcount] = useState(0)
-    const Logged = useSelector(state => state.Login)
-    const cart = useSelector(state => state.cart)
-    const uuid = useSelector(state => state.uuid)
-  
+    const Login = useSelector(state => state.Login.Login)
+    const cart = useSelector(state => state.cart.cart)
+    const uuid = useSelector(state => state.Login.uuid)
+  console.log(cart)
     useEffect(() => {
         if (localStorage.getItem('_token')) {
-            dispatch({ type: 'enable' })
+            dispatch(Enable());
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token)
             let data = { id: decode.uid[0]._id }
@@ -25,38 +26,39 @@ export default function Navs() {
                 .then((res) => {
                     console.log(res.data.count)
                     let count = res.data.count;
-                    dispatch({ type: 'cart', payload: count })
+                    dispatch(CART(count))
                 })
         }
         else if (localStorage.getItem('uuid')) {
             let uuid = localStorage.getItem('uuid')
-            dispatch({ type: 'disable', payload: uuid })
+            dispatch(DISABLE(uuid))
             let data = { id: uuid }
             getCart(data)
                 .then(res => {
                     let count = res.data.count;
                     setCartcount(res.data.count)
-                    dispatch({ type: 'cart', payload: res.data.count })
+                    dispatch(CART(res.data.count))
                 })
         }
         else {
             let uuid = uuidv4();
             localStorage.setItem('uuid', uuid)
-            dispatch({ type: 'disable', payload: uuid })
+            dispatch(DISABLE(uuid))
         }
     }, [])
 
 
     const logout = () => {
-        localStorage.clear();
+      
+        dispatch(DISABLE(uuid))
+        localStorage.clear('_token');
         sessionStorage.clear();
-        dispatch({ type: 'disable' })
         navigate('/dashboard')
     }
     const searchbar = (event) => {
         const value = event.target.value
-        dispatch({ type: 'search', payload: value })
-      
+        dispatch(SERACH(value))
+  
     }
     const search=()=>{
         navigate('/product')
@@ -76,7 +78,7 @@ export default function Navs() {
                             <Link to="/product" className={styles.link1}>Product</Link>
 
                             {
-                                Logged ? <Link to="/order" className={styles.link1}>Order</Link>
+                                Login ? <Link to="/order" className={styles.link1}>Order</Link>
                                     : <Link to="/login"className={styles.link1}>Order</Link>
                             }
                         </Nav>
@@ -85,7 +87,8 @@ export default function Navs() {
                             <FormControl onChange={searchbar} onFocus={search}  type="search" placeholder='Search...' className={styles.search1} aria-label="Search" />
                         </Form>
 
-                        {Logged ?
+
+                        {Login ?
                             <DropdownButton id="dropdown-basic-button" title={<BsPersonSquare />} variant="light" className={styles.dropdown} >
                                 <Dropdown.Item onClick={logout} style={{fontWeight:"bold"}}>Logout</Dropdown.Item>
                                 <Dropdown.Item><Link to="/profile" className={styles.link2}>Profile</Link></Dropdown.Item>
@@ -95,7 +98,7 @@ export default function Navs() {
                                 <Dropdown.Item ><Link to="/register"className={styles.link2}>Register</Link></Dropdown.Item>
                             </DropdownButton>
                         }
-
+{console.log(cart)}
                         <Button variant="light" className={styles.btn1} onClick={() => { navigate("/cart") }}><BsCart3 /><span>{cart}</span></Button>
 
                     </Navbar.Collapse>

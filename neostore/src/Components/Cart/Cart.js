@@ -6,13 +6,14 @@ import { getAllCart, incproduct, decproduct, delCart, getCart } from '../Config/
 import styles from '../Cart/Cart.module.css'
 import jwt_decode from 'jwt-decode'
 import { useSelector, useDispatch } from 'react-redux'
+import {Enable,DISABLE,CART,SERACH} from '../Action/index'
 
 export default function Cart() {
     let [products, setProducts] = useState([]);
     let [total, setTotal] = useState(0);
     let [gst, setGst] = useState(0);
     const dispatch = useDispatch();
-    const uuid = useSelector(state => state.uuid)
+    const uuid = useSelector(state => state.Login.uuid)
     const navigate = useNavigate();
     const [status, setStatus] = useState(false)
 
@@ -31,7 +32,8 @@ export default function Cart() {
                     getCart(data)
                         .then((res) => {
                             let count = res.data.count;
-                            dispatch({ type: 'cart', payload: count })
+                            dispatch(CART(count))
+                           
                         })
                         .catch(err => {
 
@@ -52,7 +54,8 @@ export default function Cart() {
                     getCart(data)
                         .then((res) => {
                             let count = res.data.count;
-                            dispatch({ type: 'cart', payload: count })
+                            dispatch(CART(count))
+                            
                         })
                         .catch(err => {
 

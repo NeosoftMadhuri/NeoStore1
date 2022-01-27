@@ -8,6 +8,7 @@ import styles from '../Login/Login.module.css'
 import { login, UserSocialLogin } from '../Config/Myservice'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCart, changeId } from '../Config/ProductService'
+import {Enable,DISABLE,CART,SERACH} from '../Action/index'
 import jwt_decode from 'jwt-decode'
 const regForEmail = RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 
@@ -20,7 +21,7 @@ export default function Login() {
     const navigate = useNavigate('')
     const [showError, setShowerror] = useState(false);
     const [Err, setErr] = useState();
-    const uuid = useSelector(state => state.uuid)
+    const uuid = useSelector(state => state.Login.uuid)
     const dispatch = useDispatch();
     const [show, setShow] = useState(true)
 
@@ -38,7 +39,8 @@ export default function Login() {
                         changeId(data)
                             .then((res) => {
                                 alert(res.data.message)
-                                dispatch({ type: 'enable' })
+                                dispatch(Enable());
+                                // dispatch({ type: 'enable' })
                                 let data = { id: decode.uid[0]._id }
                                 getCart(data)
                                     .then(res => {
@@ -113,12 +115,13 @@ export default function Login() {
                     changeId(data)
                         .then((res) => {
                             alert(res.data.message)
-                            dispatch({ type: 'enable' })
+                            dispatch(Enable());
+                            // dispatch({ type: 'enable' })
                             let data = { id: decode.uid[0]._id }
                             getCart(data)
                                 .then(res => {
                                     console.log(res.data.count);
-                                    dispatch({ type: 'cart', payload: res.data.count })
+                                    // dispatch({ type: 'cart', payload: res.data.count })
                                 })
                                 .catch(err => {
 

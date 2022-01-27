@@ -11,13 +11,14 @@ import ReactStarsRating from 'react-awesome-stars-rating'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { useSelector, useDispatch } from 'react-redux'
+import {CART,SERACH} from '../Action/index'
 
 export default function Dashboard() {
     const [show, setShow] = useState(true);
     const [productData, setProductData] = useState([]);
     const navigate = useNavigate();
     const dispatch=useDispatch();
-    const uuid = useSelector(state => state.uuid)
+    const uuid = useSelector(state => state.Login.uuid)
 
 
     useEffect(() => {
@@ -49,7 +50,7 @@ export default function Dashboard() {
                     getCart(data)
                         .then((res) => {
                             let count = res.data.count;
-                            dispatch({ type: 'cart', payload: count })
+                            dispatch(CART(count))
                         })
                         .catch(err => {
                 
@@ -72,7 +73,8 @@ export default function Dashboard() {
                     getCart(data)
                         .then((res) => {
                             let count = res.data.count;
-                            dispatch({ type: 'cart', payload: count })
+                            dispatch(CART(count))
+                           
                         })
                 })
         }

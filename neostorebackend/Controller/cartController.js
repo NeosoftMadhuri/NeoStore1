@@ -48,13 +48,16 @@ getAllOrder= async function (req, res, next) {
 }
 
 incrementProduct= async function (req, res, next) {  
+    console.log(req.body)
     let id = req.body.data._id;
     let quantity = req.body.data.quantity;
+    console.log(quantity)
     let final_quantity = quantity + 1;
     let product_cost = req.body.data.product_cost;
     let total_productCost = final_quantity * product_cost;
     try {
-        var cart = await CartService.getCart({ _id: id})
+        var cart = await CartService.get({ _id: id})
+        console.log(cart)
         if( cart[0].quantity>=10){
             return res.status(200).json({ status: 200, data:cart, message: "Can not add more 10 qunatity into one cart" });
         }
@@ -144,6 +147,35 @@ addCart = async function (req, res, next) {
         } catch (e) {
             return res.status(400).json({ status: 400, message: e.message });
         }
+
+    }
+    else
+    {
+        let customer_id = req.body.user;
+                let quantity = 1;
+                let product_id = req.body.data._id;
+                let product_name = req.body.data.product_name;
+                let product_cost = req.body.data.product_cost;
+                let total_productCost = quantity * product_cost;
+                let pro_quantity = 1;
+                let checkout = false;
+                try {
+                    var cart = await CartService.findCart({},customer_id,checkout,product_name)
+                    if(!cart[0])
+                    {
+                        var cart = await CartService.addCart({},customer_id,checkout,product_name,product_id,pro_quantity,product_cost,total_productCost)
+                         return res.status(200).json({ status: 200,  message: "Product Added Successfully" });
+                    }
+                    else
+                    {
+                        var cart = await CartService.addCartQty({},customer_id,checkout,product_name,product_id,pro_quantity,product_cost,total_productCost)
+                         return res.status(200).json({ status: 200,  message: "Product Qty Added Successfully" });
+                    }
+                }
+                catch (e) {
+                    return res.status(400).json({ status: 400, message: e.message });
+                }
+
 
     }
   
